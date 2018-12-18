@@ -8,6 +8,10 @@ Simple API to create vanilla custom elements with riot
 
 :construction::construction::construction:
 
+## Demos
+
+- [simple clickable paragraph](https://codesandbox.io/s/v8yyyz4x8y)
+
 [![Build Status][travis-image]][travis-url]
 
 [![NPM version][npm-version-image]][npm-url]
