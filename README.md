@@ -1,5 +1,13 @@
 # @riotjs/custom-elements
 
+Simple API to create vanilla custom elements with riot
+
+:construction::construction::construction:
+
+**This module is highly experimental and it's not meant to be use in production yet!**
+
+:construction::construction::construction:
+
 [![Build Status][travis-image]][travis-url]
 
 [![NPM version][npm-version-image]][npm-url]
@@ -21,19 +29,34 @@ define('x-tag', {
   tmpl: `
   <p onclick="{ onClick }">{message}</p>
 `,
+  // attributes that should be watched
   props: ['message'],
+
+  // initial data AKA opts
   data() {
     return { message: 'Click Me' }
   },
   onClick() {
     this.root.setAttribute('message', 'Ciao')
   },
-  onBeforeMount(opts) {
-    this.message = opts.message
+  onBeforeMount() {
+    console.log('before mount')
   },
-  onMounted(opts) {
-    console.log('created!')
-  }
+  onMounted() {
+    console.log('mounted!')
+  },
+  onBeforeUpdate() {
+    console.log('watched attribute was changed!')
+  },
+  onUpdated() {
+    console.log('watched attribute was changed and the tag was updated!')
+  },
+  onBeforeDestroy() {
+    console.log('before unmounting the tag')
+  },
+  onDestroyed() {
+    console.log('tag unmounted')
+  },
 })
 
 ```
@@ -50,3 +73,8 @@ define('x-tag', {
 
 ## API
 
+This module exports only a single factory function that is a wrapper around the native `customElements.define`. The `define` function accepts only 3 parameters:
+
+- tag name
+- tag api like its lifecycle methods or callbacks
+- custom options to pass to `customElements.define` like `{extends: 'button'}` for example
