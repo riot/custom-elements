@@ -1,0 +1,13 @@
+extends: eslint-config-riot
+
+parserOptions:
+  ecmaVersion: 2018
+  sourceType: 'module'
+
+rules:
+  fp/no-rest-parameters: 0
+
+globals:
+  chai: true
+  sinon: true
+  sinonChai: true
