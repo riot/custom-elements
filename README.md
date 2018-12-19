@@ -4,7 +4,7 @@ Simple API to create vanilla custom elements with riot
 
 :construction::construction::construction:
 
-**This module is highly experimental and it's not meant to be use in production yet!**
+**This module is highly experimental and it's not meant to be used in production yet!**
 
 :construction::construction::construction:
 
