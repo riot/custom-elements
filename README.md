@@ -17,7 +17,7 @@ Simple API to create vanilla custom elements with riot
 ## Demos
 
 - [simple clickable paragraph](https://codesandbox.io/s/v8yyyz4x8y)
-
+- [slotting](https://codesandbox.io/s/91k751n3n4)
 
 
 ## Usage
