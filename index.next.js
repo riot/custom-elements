@@ -1,6 +1,9 @@
 import { Tag } from 'riot'
 import curry from 'curri'
 
+// component postfix will be needed to avoid naming conflicts with the default riot tags
+const COMPONENT_NAME_POSTFIX = 'native-component'
+
 /**
  * Move all the child nodes from a source tag to another
  * @param   {HTMLElement} source - source node
@@ -15,22 +18,23 @@ function moveChildren(source, target) {
 }
 
 /**
- * Create a new tag instance
- * @param   {Object} options.api - tag api containing its methods, store...
- * @param   {string} options.tmpl - tag template
- * @param   {string} options.name - tag id
- * @param   {Function|Object } options.data - initial tag options
- * @returns {riot.Tag} a new riot.Tag instance
+ * Create a new Tag class
+ * @param   {string} name - tag id
+ * @param   {string} tmpl - tag template
+ * @param   {Object} api - tag api containing its methods, store...
+ * @returns {riot.Tag} a riot.Tag class
  */
-function createTag({element, api, tmpl, name, data}) {
-  return new class extends Tag {
+function createTagClass(name, tmpl, api) {
+  const tagClass = class extends Tag {
     constructor(...args) {
       super(...args)
       Object.assign(this, api)
     }
-    get name() { return name }
+    get name() { return `${name}-${COMPONENT_NAME_POSTFIX}` }
     get tmpl() { return tmpl }
-  }(element, typeof data === 'function' ? data() : data)
+  }
+
+  return (...args) => new tagClass(...args)
 }
 
 /**
@@ -70,6 +74,9 @@ export default function define(name, api, options) {
     ...rest
   } = api
 
+  // create the mount function only once
+  const mount = createTagClass(name, tmpl, rest)
+
   // define the new custom element
   return customElements.define(name, class extends HTMLElement {
     constructor() {
@@ -85,7 +92,7 @@ export default function define(name, api, options) {
     // on element appended callback
     connectedCallback() {
       // create a new tag instance
-      this.tag = createTag({ element: this, tmpl, name, api: rest, data })
+      this.tag = mount(this, typeof data === 'function' ? data() : data)
 
       const execLifecycle = curry(
         callLifecycleMethod
