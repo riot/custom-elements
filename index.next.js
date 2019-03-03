@@ -47,7 +47,11 @@ export default function define(name, api, options) {
       }
 
       // extend this instance with the tag API
-      Object.assign(this, tag, rest)
+      Object.assign(this,
+        tag,
+        rest,
+        template(createTemplate, expressionTypes, bindingTypes)
+      )
 
       // append the css if necessary
       if (css) this.shadow.appendChild(createStyleNode(css))
@@ -55,17 +59,13 @@ export default function define(name, api, options) {
 
     // on element appended callback
     connectedCallback() {
-      // create a new tag instance
-      this.template = template(createTemplate, expressionTypes, bindingTypes)
-
       const execLifecycle = curry(
         callLifecycleMethod
       )(this, [this.props, this.state])
 
-
       execLifecycle(this.onBeforeMount)
 
-      this.template.mount(this.shadow, this)
+      this.mount(this.shadow, this)
       execLifecycle(this.onMounted)
     }
 
@@ -74,13 +74,13 @@ export default function define(name, api, options) {
       const execLifecycle = curry(callLifecycleMethod)(this.tag, [this.props, this.state])
 
       execLifecycle(this.onBeforeUnmount)
-      this.template.unmount()
+      this.unmount()
       execLifecycle(this.onUnmounted)
     }
 
     // on attribute changed
     attributeChangedCallback(attributeName, oldValue, newValue) {
-      if (!this.template) return
+      if (!this.update) return
       this.props = {
         [attributeName]: newValue,
         ...this.props
@@ -91,7 +91,7 @@ export default function define(name, api, options) {
       )(this.props, this.state)
 
       execLifecycle(this.onBeforeUpdate)
-      this.template.update(this)
+      this.update(this)
       execLifecycle(this.onUpdated)
     }
 
