@@ -1,41 +1,5 @@
-import { Tag } from 'riot'
+import {bindingTypes, template as createTemplate, expressionTypes} from '@riotjs/dom-bindings'
 import curry from 'curri'
-
-// component postfix will be needed to avoid naming conflicts with the default riot tags
-const COMPONENT_NAME_POSTFIX = 'native-component'
-
-/**
- * Move all the child nodes from a source tag to another
- * @param   {HTMLElement} source - source node
- * @param   {HTMLElement} target - target node
- * @returns {undefined} it's a void method ¯\_(ツ)_/¯
- */
-function moveChildren(source, target) {
-  if (source.firstChild) {
-    target.appendChild(source.firstChild)
-    moveChildren(source, target)
-  }
-}
-
-/**
- * Create a new Tag class
- * @param   {string} name - tag id
- * @param   {string} tmpl - tag template
- * @param   {Object} api - tag api containing its methods, store...
- * @returns {riot.Tag} a riot.Tag class
- */
-function createTagClass(name, tmpl, api) {
-  const tagClass = class extends Tag {
-    constructor(...args) {
-      super(...args)
-      Object.assign(this, api)
-    }
-    get name() { return `${name}-${COMPONENT_NAME_POSTFIX}` }
-    get tmpl() { return tmpl }
-  }
-
-  return (...args) => new tagClass(...args)
-}
 
 /**
  * Create the style node to inject into the shadow DOM
@@ -61,21 +25,13 @@ const callLifecycleMethod = (context, args, fn) => fn && fn.apply(context, args)
  */
 export default function define(name, api, options) {
   const {
-    tmpl,
+    tag,
+    template,
     css,
-    onBeforeMount,
-    onMounted,
-    onBeforeUpdate,
-    onUpdated,
-    onBeforeDestroy,
-    onDestroyed,
+    observedAttributes,
     props,
-    data,
     ...rest
   } = api
-
-  // create the mount function only once
-  const mount = createTagClass(name, tmpl, rest)
 
   // define the new custom element
   return customElements.define(name, class extends HTMLElement {
@@ -85,6 +41,14 @@ export default function define(name, api, options) {
       // create the shadow DOM
       this.shadow = this.attachShadow({ mode: 'open' })
 
+      this.state = {}
+      this.props = {
+        ...props
+      }
+
+      // extend this instance with the tag API
+      Object.assign(this, tag, rest)
+
       // append the css if necessary
       if (css) this.shadow.appendChild(createStyleNode(css))
     }
@@ -92,44 +56,48 @@ export default function define(name, api, options) {
     // on element appended callback
     connectedCallback() {
       // create a new tag instance
-      this.tag = mount(this, typeof data === 'function' ? data() : data)
+      this.template = template(createTemplate, expressionTypes, bindingTypes)
 
       const execLifecycle = curry(
         callLifecycleMethod
-      )(this.tag, [this.tag.opts])
+      )(this, [this.props, this.state])
 
-      // move the tag root html into the shadow DOM
-      moveChildren(this, this.shadow)
 
-      execLifecycle(onBeforeMount)
-      this.tag.mount()
-      execLifecycle(onMounted)
+      execLifecycle(this.onBeforeMount)
+
+      this.template.mount(this.shadow, this)
+      execLifecycle(this.onMounted)
     }
 
     // on element removed
     disconnectedCallback() {
-      const execLifecycle = curry(callLifecycleMethod)(this.tag, [])
+      const execLifecycle = curry(callLifecycleMethod)(this.tag, [this.props, this.state])
 
-      execLifecycle(onBeforeDestroy)
-      this.tag.unmount()
-      execLifecycle(onDestroyed)
+      execLifecycle(this.onBeforeUnmount)
+      this.template.unmount()
+      execLifecycle(this.onUnmounted)
     }
 
     // on attribute changed
     attributeChangedCallback(attributeName, oldValue, newValue) {
-      if (!this.tag) return
+      if (!this.template) return
+      this.props = {
+        [attributeName]: newValue,
+        ...this.props
+      }
+
       const execLifecycle = curry(
         callLifecycleMethod
-      )(this.tag, [attributeName, oldValue, newValue])
+      )(this.props, this.state)
 
-      execLifecycle(onBeforeUpdate)
-      this.tag.update({ [attributeName]: newValue })
-      execLifecycle(onUpdated)
+      execLifecycle(this.onBeforeUpdate)
+      this.template.update(this)
+      execLifecycle(this.onUpdated)
     }
 
     // component properties to observe
     static get observedAttributes() {
-      return props || []
+      return observedAttributes || []
     }
   }, options)
 }

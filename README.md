@@ -23,48 +23,10 @@ Simple API to create vanilla custom elements with riot
 ## Usage
 
 ```js
+import MyComponent from './my-component.riot'
 import define from '@riotjs/custom-elements'
 
-define('x-tag', {
-  css: `
-    :host {
-      color: red;
-      cursor: pointer;
-    }
-`,
-  tmpl: `
-  <p onclick="{ onClick }">{message}</p>
-`,
-  // attributes that should be watched
-  props: ['message'],
-
-  // initial data AKA opts
-  data() {
-    return { message: 'Click Me' }
-  },
-  onClick() {
-    this.root.setAttribute('message', 'Ciao')
-  },
-  onBeforeMount() {
-    console.log('before mount')
-  },
-  onMounted() {
-    console.log('mounted!')
-  },
-  onBeforeUpdate() {
-    console.log('watched attribute was changed!')
-  },
-  onUpdated() {
-    console.log('watched attribute was changed and the tag was updated!')
-  },
-  onBeforeDestroy() {
-    console.log('before unmounting the tag')
-  },
-  onDestroyed() {
-    console.log('tag unmounted')
-  },
-})
-
+define('x-tag', MyComponent)
 ```
 
 [travis-image]:https://img.shields.io/travis/riot/custom-elements.svg?style=flat-square
@@ -82,5 +44,5 @@ define('x-tag', {
 This module exports only a single factory function that is a wrapper around the native `customElements.define`. The `define` function accepts only 3 parameters:
 
 - tag name
-- tag api like its lifecycle methods or callbacks
+- tag api normally generated via riot compiler
 - custom options to pass to `customElements.define` like `{extends: 'button'}` for example

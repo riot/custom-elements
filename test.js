@@ -9,13 +9,20 @@ describe('@riotjs/custom-elements', function() {
   it('can generate properly the tag options', () => {
     const name = tmpTagName()
     define(name, {
-      tmpl: '<p>{ message }</p>',
-      data: { message: 'hello' }
+      template: (t, e) => t('<p><!----></p>', [{
+        selector: 'p',
+        expressions: [{
+          type: e.TEXT,
+          childNodeIndex: 0,
+          evaluate: (s) => s.props.message
+        }]
+      }]),
+      props: { message: 'hello' }
     })
 
     const el = document.createElement(name)
     document.body.appendChild(el)
-    expect(el.tag.opts.message).to.be.equal('hello')
+    expect(el.props.message).to.be.equal('hello')
   })
 
   it('lifecycle events get properly called', () => {
@@ -24,19 +31,26 @@ describe('@riotjs/custom-elements', function() {
     const onMounted = sinon.spy()
     const onBeforeUpdate = sinon.spy()
     const onUpdated = sinon.spy()
-    const onBeforeDestroy = sinon.spy()
-    const onDestroyed = sinon.spy()
+    const onBeforeUnmount = sinon.spy()
+    const onUnmounted = sinon.spy()
 
     define(name, {
-      tmpl: '<p>{ message }</p>',
-      data: { message: 'hello' },
+      template: (t, e) => t('<p><!----></p>', [{
+        selector: 'p',
+        expressions: [{
+          type: e.TEXT,
+          childNodeIndex: 0,
+          evaluate: (s) => s.props.message
+        }]
+      }]),
+      props: { message: 'hello' },
       onBeforeMount,
       onMounted,
       onBeforeUpdate,
       onUpdated,
-      onBeforeDestroy,
-      onDestroyed,
-      props: ['message']
+      onBeforeUnmount,
+      onUnmounted,
+      observedAttributes: ['message']
     })
 
     const el = document.createElement(name)
@@ -46,8 +60,8 @@ describe('@riotjs/custom-elements', function() {
     expect(onMounted).to.have.been.calledOnce
     expect(onBeforeUpdate).to.have.not.been.called
     expect(onUpdated).to.have.not.been.called
-    expect(onBeforeDestroy).to.have.not.been.called
-    expect(onDestroyed).to.have.not.been.called
+    expect(onBeforeUnmount).to.have.not.been.called
+    expect(onUnmounted).to.have.not.been.called
 
     el.setAttribute('message', 'bar')
 
@@ -55,8 +69,8 @@ describe('@riotjs/custom-elements', function() {
     expect(onMounted).to.have.been.calledOnce
     expect(onBeforeUpdate).to.have.been.calledOnce
     expect(onUpdated).to.have.been.calledOnce
-    expect(onBeforeDestroy).to.have.not.been.called
-    expect(onDestroyed).to.have.not.been.called
+    expect(onBeforeUnmount).to.have.not.been.called
+    expect(onUnmounted).to.have.not.been.called
 
     el.parentNode.removeChild(el)
 
@@ -64,15 +78,22 @@ describe('@riotjs/custom-elements', function() {
     expect(onMounted).to.have.been.calledOnce
     expect(onBeforeUpdate).to.have.been.calledOnce
     expect(onUpdated).to.have.been.calledOnce
-    expect(onBeforeDestroy).to.have.been.calledOnce
-    expect(onDestroyed).to.have.been.calledOnce
+    expect(onBeforeUnmount).to.have.been.calledOnce
+    expect(onUnmounted).to.have.been.calledOnce
   })
 
   it('custom tag api methods will be properly created', () => {
     const name = tmpTagName()
     define(name, {
-      tmpl: '<p>{ message }</p>',
-      data: { message: 'hello' },
+      template: (t, e) => t('<p><!----></p>', [{
+        selector: 'p',
+        expressions: [{
+          type: e.TEXT,
+          childNodeIndex: 0,
+          evaluate: (s) => s.props.message
+        }]
+      }]),
+      props: { message: 'hello' },
       onClick() {
         this.foo = 'bar'
       }
@@ -80,15 +101,22 @@ describe('@riotjs/custom-elements', function() {
 
     const el = document.createElement(name)
     document.body.appendChild(el)
-    expect(el.tag.onClick).to.be.ok
+    expect(el.onClick).to.be.ok
   })
 
   it('css will be properly created via shadow DOM', () => {
     const name = tmpTagName()
     define(name, {
-      tmpl: '<p>{ message }</p>',
+      template: (t, e) => t('<p><!----></p>', [{
+        selector: 'p',
+        expressions: [{
+          type: e.TEXT,
+          childNodeIndex: 0,
+          evaluate: (s) => s.props.message
+        }]
+      }]),
       css: ':host { color: red }',
-      data: { message: 'hello' }
+      props: { message: 'hello' }
     })
 
     const el = document.createElement(name)
