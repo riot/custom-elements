@@ -13,6 +13,21 @@ function createStyleNode(css) {
   return style
 }
 
+/**
+ * Autobind the methods of a source object to itself
+ * @param   {Object} source - the component instance created
+ * @returns {Object} the original object received
+ */
+export function autobindMethods(source) {
+  Object.keys(source).forEach(prop => {
+    if (typeof source[prop] === 'function') {
+      source[prop] = source[prop].bind(source)
+    }
+  })
+
+  return source
+}
+
 // call a lifecycle method only if it exists
 const callLifecycleMethod = (context, args, fn) => fn && fn.apply(context, args)
 
@@ -55,6 +70,8 @@ export default function define(name, api, options) {
 
       // append the css if necessary
       if (css) this.shadow.appendChild(createStyleNode(css))
+
+      return autobindMethods(this)
     }
 
     // on element appended callback
