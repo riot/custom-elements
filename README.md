@@ -16,7 +16,7 @@ Simple API to create vanilla custom elements with riot
 
 ## Demos
 
-- Coming soon...
+- [Simple demo](https://codesandbox.io/s/lynokr1z4l)
 
 
 ## Usage
