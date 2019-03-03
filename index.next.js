@@ -13,6 +13,19 @@ function createStyleNode(css) {
 }
 
 /**
+ * Move all the child nodes from a source tag to another
+ * @param   {HTMLElement} source - source node
+ * @param   {HTMLElement} target - target node
+ * @returns {undefined} it's a void method ¯\_(ツ)_/¯
+ */
+function moveChildren(source, target) {
+  if (source.firstChild) {
+    target.appendChild(source.firstChild)
+    moveChildren(source, target)
+  }
+}
+
+/**
  * Create a new custom element using the riot core components
  * @param   {string} name - custom component tag name
  * @param   {Object} api - custom component api containing lifecycle methods and properties
@@ -46,6 +59,9 @@ export default function define(name, api, options) {
     // on element appended callback
     connectedCallback() {
       this.component = this.componentFactory(this, tagImplementation.props)
+
+      // move the tag root html into the shadow DOM
+      moveChildren(this.component.root, this.shadow)
     }
 
     // on attribute changed
