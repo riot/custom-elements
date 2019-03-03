@@ -1,5 +1,4 @@
-import {bindingTypes, template as createTemplate, expressionTypes} from '@riotjs/dom-bindings'
-import curry from 'curri'
+import {component} from 'riot'
 
 /**
  * Create the style node to inject into the shadow DOM
@@ -14,24 +13,6 @@ function createStyleNode(css) {
 }
 
 /**
- * Autobind the methods of a source object to itself
- * @param   {Object} source - the component instance created
- * @returns {Object} the original object received
- */
-export function autobindMethods(source) {
-  Object.keys(source).forEach(prop => {
-    if (typeof source[prop] === 'function') {
-      source[prop] = source[prop].bind(source)
-    }
-  })
-
-  return source
-}
-
-// call a lifecycle method only if it exists
-const callLifecycleMethod = (context, args, fn) => fn && fn.apply(context, args)
-
-/**
  * Create a new custom element using the riot core components
  * @param   {string} name - custom component tag name
  * @param   {Object} api - custom component api containing lifecycle methods and properties
@@ -40,13 +21,11 @@ const callLifecycleMethod = (context, args, fn) => fn && fn.apply(context, args)
  */
 export default function define(name, api, options) {
   const {
-    tag,
-    template,
     css,
-    observedAttributes,
-    props,
-    ...rest
+    tag,
+    template
   } = api
+  const tagImplementation = tag || {}
 
   // define the new custom element
   return customElements.define(name, class extends HTMLElement {
@@ -55,66 +34,37 @@ export default function define(name, api, options) {
       super()
       // create the shadow DOM
       this.shadow = this.attachShadow({ mode: 'open' })
-
-      this.state = {}
-      this.props = {
-        ...props
-      }
-
-      // extend this instance with the tag API
-      Object.assign(this,
-        tag,
-        rest,
-        template(createTemplate, expressionTypes, bindingTypes)
-      )
+      this.componentFactory = component({
+        tag: tagImplementation,
+        template
+      })
 
       // append the css if necessary
       if (css) this.shadow.appendChild(createStyleNode(css))
-
-      return autobindMethods(this)
     }
 
     // on element appended callback
     connectedCallback() {
-      const execLifecycle = curry(
-        callLifecycleMethod
-      )(this, [this.props, this.state])
-
-      execLifecycle(this.onBeforeMount)
-
-      this.mount(this.shadow, this)
-      execLifecycle(this.onMounted)
-    }
-
-    // on element removed
-    disconnectedCallback() {
-      const execLifecycle = curry(callLifecycleMethod)(this.tag, [this.props, this.state])
-
-      execLifecycle(this.onBeforeUnmount)
-      this.unmount()
-      execLifecycle(this.onUnmounted)
+      this.component = this.componentFactory(this, tagImplementation.props)
     }
 
     // on attribute changed
     attributeChangedCallback(attributeName, oldValue, newValue) {
-      if (!this.update) return
-      this.props = {
-        [attributeName]: newValue,
-        ...this.props
-      }
+      if (!this.component) return
 
-      const execLifecycle = curry(
-        callLifecycleMethod
-      )(this.props, this.state)
+      this.component.update({
+        [attributeName]: newValue
+      })
+    }
 
-      execLifecycle(this.onBeforeUpdate)
-      this.update(this)
-      execLifecycle(this.onUpdated)
+    // on element removed
+    disconnectedCallback() {
+      this.component.unmount()
     }
 
     // component properties to observe
     static get observedAttributes() {
-      return observedAttributes || []
+      return tagImplementation.observedAttributes || []
     }
   }, options)
 }

@@ -14,15 +14,17 @@ describe('@riotjs/custom-elements', function() {
         expressions: [{
           type: e.TEXT,
           childNodeIndex: 0,
-          evaluate: (s) => s.props.message
+          evaluate: (s) => s.props.message // eslint-disable-line
         }]
       }]),
-      props: { message: 'hello' }
+      tag: {
+        props: { message: 'hello' }
+      }
     })
 
     const el = document.createElement(name)
     document.body.appendChild(el)
-    expect(el.props.message).to.be.equal('hello')
+    expect(el.component.props.message).to.be.equal('hello')
   })
 
   it('lifecycle events get properly called', () => {
@@ -43,14 +45,16 @@ describe('@riotjs/custom-elements', function() {
           evaluate: (s) => s.props.message
         }]
       }]),
-      props: { message: 'hello' },
-      onBeforeMount,
-      onMounted,
-      onBeforeUpdate,
-      onUpdated,
-      onBeforeUnmount,
-      onUnmounted,
-      observedAttributes: ['message']
+      tag: {
+        props: { message: 'hello' },
+        onBeforeMount,
+        onMounted,
+        onBeforeUpdate,
+        onUpdated,
+        onBeforeUnmount,
+        onUnmounted,
+        observedAttributes: ['message']
+      }
     })
 
     const el = document.createElement(name)
@@ -93,15 +97,17 @@ describe('@riotjs/custom-elements', function() {
           evaluate: (s) => s.props.message
         }]
       }]),
-      props: { message: 'hello' },
-      onClick() {
-        this.foo = 'bar'
+      tag: {
+        props: { message: 'hello' },
+        onClick() {
+          this.foo = 'bar'
+        }
       }
     })
 
     const el = document.createElement(name)
     document.body.appendChild(el)
-    expect(el.onClick).to.be.ok
+    expect(el.component.onClick).to.be.ok
   })
 
   it('css will be properly created via shadow DOM', () => {
@@ -116,7 +122,9 @@ describe('@riotjs/custom-elements', function() {
         }]
       }]),
       css: ':host { color: red }',
-      props: { message: 'hello' }
+      tag: {
+        props: { message: 'hello' }
+      }
     })
 
     const el = document.createElement(name)
