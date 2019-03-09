@@ -17,7 +17,7 @@ describe('@riotjs/custom-elements', function() {
           evaluate: (s) => s.props.message // eslint-disable-line
         }]
       }]),
-      tag: {
+      exports: {
         props: { message: 'hello' }
       }
     })
@@ -45,7 +45,7 @@ describe('@riotjs/custom-elements', function() {
           evaluate: (s) => s.props.message
         }]
       }]),
-      tag: {
+      exports: {
         props: { message: 'hello' },
         onBeforeMount,
         onMounted,
@@ -97,7 +97,7 @@ describe('@riotjs/custom-elements', function() {
           evaluate: (s) => s.props.message
         }]
       }]),
-      tag: {
+      exports: {
         props: { message: 'hello' },
         onClick() {
           this.foo = 'bar'
@@ -122,7 +122,7 @@ describe('@riotjs/custom-elements', function() {
         }]
       }]),
       css: ':host { color: red }',
-      tag: {
+      exports: {
         props: { message: 'hello' }
       }
     })

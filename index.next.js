@@ -35,10 +35,10 @@ function moveChildren(source, target) {
 export default function define(name, api, options) {
   const {
     css,
-    tag,
+    exports,
     template
   } = api
-  const tagImplementation = tag || {}
+  const tagImplementation = exports || {}
 
   // define the new custom element
   return customElements.define(name, class extends HTMLElement {
@@ -48,7 +48,7 @@ export default function define(name, api, options) {
       // create the shadow DOM
       this.shadow = this.attachShadow({ mode: 'open' })
       this.componentFactory = component({
-        tag: tagImplementation,
+        exports: tagImplementation,
         template
       })
 
