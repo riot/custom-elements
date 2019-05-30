@@ -6,7 +6,7 @@
   "jsnext:main": "index.next.js",
   "module": "index.next.js",
   "scripts": {
-    "prepare": "npm i --no-save riot@4.0.0-beta.1",
+    "prepare": "npm i --no-save riot@4",
     "prepublishOnly": "npm run build && npm test",
     "lint": "npx eslint index.next.js test.js rollup.config.js",
     "build": "rollup -c",
@@ -55,6 +55,6 @@
     "sinon-chai": "^3.3.0"
   },
   "peerDependencies": {
-    "riot": "^4.0.0-beta.1"
+    "riot": "^4.0.0"
   }
 }

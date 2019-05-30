@@ -18,12 +18,13 @@ describe('@riotjs/custom-elements', function() {
         }]
       }]),
       exports: {
-        props: { message: 'hello' }
+        observedAttributes: ['message']
       }
     })
 
     const el = document.createElement(name)
     document.body.appendChild(el)
+    el.setAttribute('message', 'hello')
     expect(el.component.props.message).to.be.equal('hello')
   })
 
@@ -46,7 +47,6 @@ describe('@riotjs/custom-elements', function() {
         }]
       }]),
       exports: {
-        props: { message: 'hello' },
         onBeforeMount,
         onMounted,
         onBeforeUpdate,
@@ -98,7 +98,6 @@ describe('@riotjs/custom-elements', function() {
         }]
       }]),
       exports: {
-        props: { message: 'hello' },
         onClick() {
           this.foo = 'bar'
         }
@@ -121,10 +120,7 @@ describe('@riotjs/custom-elements', function() {
           evaluate: (s) => s.props.message
         }]
       }]),
-      css: ':host { color: red }',
-      exports: {
-        props: { message: 'hello' }
-      }
+      css: ':host { color: red }'
     })
 
     const el = document.createElement(name)

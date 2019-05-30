@@ -58,7 +58,7 @@ export default function define(name, api, options) {
 
     // on element appended callback
     connectedCallback() {
-      this.component = this.componentFactory(this, tagImplementation.props)
+      this.component = this.componentFactory(this)
 
       // move the tag root html into the shadow DOM
       moveChildren(this.component.root, this.shadow)
@@ -68,7 +68,7 @@ export default function define(name, api, options) {
     attributeChangedCallback(attributeName, oldValue, newValue) {
       if (!this.component) return
 
-      this.component.update({
+      this.component.update({}, {
         [attributeName]: newValue
       })
     }
