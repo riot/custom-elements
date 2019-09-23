@@ -26,22 +26,20 @@ function moveChildren(source, target) {
 }
 
 /**
- * Create a new custom element using the riot core components
- * @param   {string} name - custom component tag name
+ * Create a new custom element Class using the riot core components
  * @param   {Object} api - custom component api containing lifecycle methods and properties
- * @param   {Object} options - optional options that could be passed to customElements.define
- * @returns {undefined} it's a void method again ¯\_(ツ)_/¯
+ * @returns {Class} Class extends HTMLElement
  */
-export default function define(name, api, options) {
+export function buildElementClass(api) {
   const {
     css,
     exports,
     template
   } = api
+
   const tagImplementation = exports || {}
 
-  // define the new custom element
-  return customElements.define(name, class extends HTMLElement {
+  return class extends HTMLElement {
     constructor() {
       // call the super generic HTMLElement class
       super()
@@ -82,5 +80,17 @@ export default function define(name, api, options) {
     static get observedAttributes() {
       return tagImplementation.observedAttributes || []
     }
-  }, options)
+  };
+}
+
+/**
+ * Define a new custom element using the riot core components
+ * @param   {string} name - custom component tag name
+ * @param   {Object} api - custom component api containing lifecycle methods and properties
+ * @param   {Object} options - optional options that could be passed to customElements.define
+ * @returns {undefined} it's a void method again ¯\_(ツ)_/¯
+ */
+export default function define(name, api, options) {
+  // define the new custom element
+  return customElements.define(name, buildElementClass(api), options);
 }
