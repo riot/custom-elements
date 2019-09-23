@@ -30,7 +30,7 @@ function moveChildren(source, target) {
  * @param   {Object} api - custom component api containing lifecycle methods and properties
  * @returns {Class} Class extends HTMLElement
  */
-export function buildElementClass(api) {
+export function createElementClass(api) {
   const {
     css,
     exports,
