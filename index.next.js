@@ -80,7 +80,7 @@ export function buildElementClass(api) {
     static get observedAttributes() {
       return tagImplementation.observedAttributes || []
     }
-  };
+  }
 }
 
 /**
@@ -92,5 +92,5 @@ export function buildElementClass(api) {
  */
 export default function define(name, api, options) {
   // define the new custom element
-  return customElements.define(name, buildElementClass(api), options);
+  return customElements.define(name, buildElementClass(api), options)
 }
