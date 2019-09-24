@@ -92,5 +92,5 @@ export function createElementClass(api) {
  */
 export default function define(name, api, options) {
   // define the new custom element
-  return customElements.define(name, createElementClass(api), options);
+  return customElements.define(name, createElementClass(api), options)
 }
