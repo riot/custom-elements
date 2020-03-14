@@ -6,7 +6,6 @@
   "jsnext:main": "index.next.js",
   "module": "index.next.js",
   "scripts": {
-    "prepare": "npm i --no-save riot@4",
     "prepublishOnly": "npm run build && npm test",
     "lint": "npx eslint index.next.js test.js rollup.config.js",
     "build": "rollup -c",
@@ -42,19 +41,23 @@
   "homepage": "https://github.com/riot/custom-elements#readme",
   "devDependencies": {
     "chai": "^4.2.0",
-    "eslint": "^5.15.1",
-    "eslint-config-riot": "^2.0.0",
-    "karma": "^4.0.1",
-    "karma-chrome-launcher": "^2.2.0",
+    "eslint": "^6.8.0",
+    "eslint-config-riot": "^3.0.0",
+    "karma": "^4.4.1",
+    "karma-chrome-launcher": "^3.1.0",
     "karma-mocha": "^1.3.0",
-    "karma-rollup-preprocessor": "^7.0.0",
-    "mocha": "^6.0.2",
-    "rollup": "^1.6.0",
-    "rollup-plugin-node-resolve": "^4.0.1",
-    "sinon": "^7.2.7",
-    "sinon-chai": "^3.3.0"
+    "karma-rollup-preprocessor": "^7.0.3",
+    "mocha": "^7.1.0",
+    "riot": "^4.11.0",
+    "rollup": "^2.0.6",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "sinon": "^9.0.1",
+    "sinon-chai": "^3.5.0"
   },
   "peerDependencies": {
-    "riot": "^4.0.0"
+    "riot": "^4.11.0"
+  },
+  "dependencies": {
+    "@riotjs/util": "^1.2.0"
   }
 }

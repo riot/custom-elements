@@ -1,4 +1,5 @@
 import {component} from 'riot'
+import {defineProperty} from '@riotjs/util/objects'
 
 /**
  * Create the style node to inject into the shadow DOM
@@ -66,9 +67,11 @@ export function createElementClass(api) {
     attributeChangedCallback(attributeName, oldValue, newValue) {
       if (!this.component) return
 
-      this.component.update({}, {
+      defineProperty(this.component, 'props', {
+        ...this.component.props,
         [attributeName]: newValue
       })
+      this.component.update()
     }
 
     // on element removed
