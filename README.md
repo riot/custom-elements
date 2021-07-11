@@ -2,12 +2,11 @@
 
 Simple API to create vanilla custom elements with riot
 
-**This module is highly experimental and it's not meant to be used in production yet!**
+**This module is highly experimental, and it's not meant to be used in production yet!**
 
 :construction::construction::construction:
 
-[![Build Status][travis-image]][travis-url]
-
+[![Build Status][ci-image]][ci-url]
 [![NPM version][npm-version-image]][npm-url]
 [![NPM downloads][npm-downloads-image]][npm-url]
 [![MIT License][license-image]][license-url]
@@ -41,8 +40,9 @@ Notice that in order to update the component properties via attribute you will n
 </my-component>
 ```
 
-[travis-image]:https://img.shields.io/travis/riot/custom-elements.svg?style=flat-square
-[travis-url]:https://travis-ci.org/riot/custom-elements
+
+[ci-image]:https://img.shields.io/github/workflow/status/riot/custom-elements/test?style=flat-square
+[ci-url]:https://github.com/riot/custom-elements/actions
 
 [license-image]:http://img.shields.io/badge/license-MIT-000000.svg?style=flat-square
 [license-url]:LICENSE
