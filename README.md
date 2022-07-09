@@ -1,5 +1,7 @@
 # @riotjs/custom-elements
 
+[![Riot.js custom elements logo](https://raw.githubusercontent.com/riot/branding/main/custom-elements/custom-elements-horizontal.svg)](https://github.com/riot/custom-elements/)
+
 Simple API to create vanilla custom elements with riot
 
 **This module is highly experimental, and it's not meant to be used in production yet!**
