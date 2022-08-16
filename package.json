@@ -41,23 +41,23 @@
   "homepage": "https://github.com/riot/custom-elements#readme",
   "devDependencies": {
     "chai": "^4.3.6",
-    "eslint": "^8.19.0",
+    "eslint": "^8.22.0",
     "eslint-config-riot": "^3.0.0",
     "karma": "^6.4.0",
     "karma-chrome-launcher": "^3.1.1",
     "karma-mocha": "^2.0.1",
     "karma-rollup-preprocessor": "^7.0.8",
     "mocha": "^10.0.0",
-    "riot": "^6.1.2",
-    "rollup": "^2.76.0",
+    "riot": "^7.0.3",
+    "rollup": "^2.78.0",
     "rollup-plugin-node-resolve": "^5.2.0",
     "sinon": "^14.0.0",
     "sinon-chai": "^3.7.0"
   },
   "peerDependencies": {
-    "riot": "^6.1.2"
+    "riot": "^6.0.0 || ^7.0.0"
   },
   "dependencies": {
-    "@riotjs/util": "^2.0.4"
+    "@riotjs/util": "^2.1.1"
   }
 }
