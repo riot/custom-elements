@@ -1,6 +1,6 @@
 {
   "name": "@riotjs/custom-elements",
-  "version": "6.0.0",
+  "version": "6.0.1",
   "description": "Simple API to create vanilla custom elements with riot",
   "main": "index.js",
   "jsnext:main": "index.next.js",
