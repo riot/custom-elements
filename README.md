@@ -43,7 +43,7 @@ Notice that in order to update the component properties via attribute you will n
 ```
 
 
-[ci-image]:https://img.shields.io/github/workflow/status/riot/custom-elements/test?style=flat-square
+[ci-image]:https://img.shields.io/github/actions/workflow/status/riot/custom-elements/test.yml?style=flat-square
 [ci-url]:https://github.com/riot/custom-elements/actions
 
 [license-image]:http://img.shields.io/badge/license-MIT-000000.svg?style=flat-square
