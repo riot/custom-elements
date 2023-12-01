@@ -13,9 +13,7 @@ module.exports = function(config) {
       'test.js': ['rollup']
     },
     rollupPreprocessor: {
-      plugins: [require('rollup-plugin-node-resolve')({
-        jsnext: true
-      })],
+      plugins: [require('@rollup/plugin-node-resolve')()],
       sourcemap: 'inline',
       output: {
         format: 'iife',

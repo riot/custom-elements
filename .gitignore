@@ -38,6 +38,7 @@ jspm_packages
 
 # mac useless file
 .DS_Store
-index.js
+/index.js
+/index.cjs
 coverage
 .idea

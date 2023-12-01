@@ -3,20 +3,24 @@
   "version": "6.0.1",
   "description": "Simple API to create vanilla custom elements with riot",
   "main": "index.js",
-  "jsnext:main": "index.next.js",
-  "module": "index.next.js",
+  "module": "index.js",
+  "exports": {
+    "import": "./index.js",
+    "require": "./index.cjs"
+  },
+  "files": [
+    "index.cjs",
+    "index.js"
+  ],
   "scripts": {
     "prepublishOnly": "npm run build && npm test",
-    "lint": "npx eslint index.next.js test.js rollup.config.js",
+    "lint": "npx eslint src test.js rollup.config.js",
     "build": "rollup -c",
     "pretest": "npm run build",
     "test-debug": "karma start --browsers Chrome --single-run 0",
-    "test": "npm run lint && npx karma start karma.conf.js"
+    "test": "npm run lint && npx karma start karma.conf.cjs"
   },
-  "files": [
-    "index.js",
-    "index.next.js"
-  ],
+  "type": "module",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/riot/custom-elements.git"
@@ -40,24 +44,24 @@
   },
   "homepage": "https://github.com/riot/custom-elements#readme",
   "devDependencies": {
-    "chai": "^4.3.6",
-    "eslint": "^8.22.0",
-    "eslint-config-riot": "^3.0.0",
-    "karma": "^6.4.0",
-    "karma-chrome-launcher": "^3.1.1",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "chai": "^4.3.10",
+    "eslint": "^8.55.0",
+    "eslint-config-riot": "^4.1.1",
+    "karma": "^6.4.2",
+    "karma-chrome-launcher": "^3.2.0",
     "karma-mocha": "^2.0.1",
     "karma-rollup-preprocessor": "^7.0.8",
-    "mocha": "^10.0.0",
-    "riot": "^7.0.3",
-    "rollup": "^2.78.0",
-    "rollup-plugin-node-resolve": "^5.2.0",
-    "sinon": "^14.0.0",
+    "mocha": "^10.2.0",
+    "riot": "^9.1.2",
+    "rollup": "^4.6.1",
+    "sinon": "^17.0.1",
     "sinon-chai": "^3.7.0"
   },
   "peerDependencies": {
-    "riot": "^6.0.0 || ^7.0.0"
+    "riot": "^6.0.0 || ^7.0.0 || ^9.0.0"
   },
   "dependencies": {
-    "@riotjs/util": "^2.1.1"
+    "@riotjs/util": "^2.2.4"
   }
 }
