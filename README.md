@@ -4,8 +4,6 @@
 
 Simple API to create vanilla custom elements with riot
 
-**This module is highly experimental, and it's not meant to be used in production yet!**
-
 :construction::construction::construction:
 
 [![Build Status][ci-image]][ci-url]
