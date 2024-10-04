@@ -4,8 +4,6 @@
 
 Simple API to create vanilla custom elements with riot
 
-:construction::construction::construction:
-
 [![Build Status][ci-image]][ci-url]
 [![NPM version][npm-version-image]][npm-url]
 [![NPM downloads][npm-downloads-image]][npm-url]
