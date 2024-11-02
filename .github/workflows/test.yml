@@ -15,9 +15,6 @@ jobs:
         node-version: [18.x, 20.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
     steps:
-      - name: Install Chromium
-        run: sudo apt-get install chromium-browser
-
       - uses: actions/checkout@v4
       - name: Local Unit Test ${{ matrix.node-version }}
         uses: actions/setup-node@v1
