@@ -1,25 +1,34 @@
-import define from './'
-const { expect } = chai
+import { expect, use } from 'chai'
+import define from './index.js'
+import sinon from 'sinon'
+import sinonChai from 'sinon-chai'
+
+use(sinonChai)
 
 const tmpTagName = ((i = 0) => {
   return () => `tat-${i++}`
 })()
 
-describe('@riotjs/custom-elements', function() {
+describe('@riotjs/custom-elements', function () {
   it('can generate properly the tag options', () => {
     const name = tmpTagName()
     define(name, {
-      template: (t, e) => t('<p><!----></p>', [{
-        selector: 'p',
-        expressions: [{
-          type: e.TEXT,
-          childNodeIndex: 0,
-          evaluate: (s) => s.props.message // eslint-disable-line
-        }]
-      }]),
+      template: (t, e) =>
+        t('<p><!----></p>', [
+          {
+            selector: 'p',
+            expressions: [
+              {
+                type: e.TEXT,
+                childNodeIndex: 0,
+                evaluate: (s) => s.props.message, // eslint-disable-line
+              },
+            ],
+          },
+        ]),
       exports: {
-        observedAttributes: ['message']
-      }
+        observedAttributes: ['message'],
+      },
     })
 
     const el = document.createElement(name)
@@ -38,14 +47,19 @@ describe('@riotjs/custom-elements', function() {
     const onUnmounted = sinon.spy()
 
     define(name, {
-      template: (t, e) => t('<p><!----></p>', [{
-        selector: 'p',
-        expressions: [{
-          type: e.TEXT,
-          childNodeIndex: 0,
-          evaluate: (s) => s.props.message
-        }]
-      }]),
+      template: (t, e) =>
+        t('<p><!----></p>', [
+          {
+            selector: 'p',
+            expressions: [
+              {
+                type: e.TEXT,
+                childNodeIndex: 0,
+                evaluate: (s) => s.props.message,
+              },
+            ],
+          },
+        ]),
       exports: {
         onBeforeMount,
         onMounted,
@@ -53,8 +67,8 @@ describe('@riotjs/custom-elements', function() {
         onUpdated,
         onBeforeUnmount,
         onUnmounted,
-        observedAttributes: ['message']
-      }
+        observedAttributes: ['message'],
+      },
     })
 
     const el = document.createElement(name)
@@ -89,19 +103,24 @@ describe('@riotjs/custom-elements', function() {
   it('custom tag api methods will be properly created', () => {
     const name = tmpTagName()
     define(name, {
-      template: (t, e) => t('<p><!----></p>', [{
-        selector: 'p',
-        expressions: [{
-          type: e.TEXT,
-          childNodeIndex: 0,
-          evaluate: (s) => s.props.message
-        }]
-      }]),
+      template: (t, e) =>
+        t('<p><!----></p>', [
+          {
+            selector: 'p',
+            expressions: [
+              {
+                type: e.TEXT,
+                childNodeIndex: 0,
+                evaluate: (s) => s.props.message,
+              },
+            ],
+          },
+        ]),
       exports: {
         onClick() {
           this.foo = 'bar'
-        }
-      }
+        },
+      },
     })
 
     const el = document.createElement(name)
@@ -112,19 +131,26 @@ describe('@riotjs/custom-elements', function() {
   it('css will be properly created via shadow DOM', () => {
     const name = tmpTagName()
     define(name, {
-      template: (t, e) => t('<p><!----></p>', [{
-        selector: 'p',
-        expressions: [{
-          type: e.TEXT,
-          childNodeIndex: 0,
-          evaluate: (s) => s.props.message
-        }]
-      }]),
-      css: ':host { color: red }'
+      template: (t, e) =>
+        t('<p><!----></p>', [
+          {
+            selector: 'p',
+            expressions: [
+              {
+                type: e.TEXT,
+                childNodeIndex: 0,
+                evaluate: (s) => s.props.message,
+              },
+            ],
+          },
+        ]),
+      css: ':host { margin: 10px; }',
     })
 
     const el = document.createElement(name)
     document.body.appendChild(el)
-    expect(window.getComputedStyle(el).color).to.be.equal('rgb(255, 0, 0)')
+    expect(window.getComputedStyle(el).getPropertyValue('margin')).to.be.equal(
+      '10px',
+    )
   })
 })

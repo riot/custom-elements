@@ -17,8 +17,8 @@
     "lint": "npx eslint src test.js rollup.config.js",
     "build": "rollup -c",
     "pretest": "npm run build",
-    "test-debug": "karma start --browsers Chrome --single-run 0",
-    "test": "npm run lint && npx karma start karma.conf.cjs"
+    "test": "npm run lint && npm run wdio",
+    "wdio": "start-server-and-test 'npx serve' 3000 'wdio run ./wdio.conf.js'"
   },
   "type": "module",
   "repository": {
@@ -44,24 +44,27 @@
   },
   "homepage": "https://github.com/riot/custom-elements#readme",
   "devDependencies": {
-    "@rollup/plugin-node-resolve": "^15.2.3",
-    "chai": "^4.3.10",
+    "@riotjs/prettier-config": "^1.1.0",
+    "@rollup/plugin-node-resolve": "^15.3.0",
+    "@wdio/browser-runner": "^9.2.8",
+    "@wdio/cli": "^9.2.8",
+    "@wdio/mocha-framework": "^9.2.8",
+    "chai": "^5.1.2",
     "eslint": "^8.55.0",
     "eslint-config-riot": "^4.1.1",
-    "karma": "^6.4.2",
-    "karma-chrome-launcher": "^3.2.0",
-    "karma-mocha": "^2.0.1",
-    "karma-rollup-preprocessor": "^7.0.8",
-    "mocha": "^10.2.0",
-    "riot": "^9.1.2",
-    "rollup": "^4.6.1",
-    "sinon": "^17.0.1",
-    "sinon-chai": "^3.7.0"
+    "mocha": "^10.8.2",
+    "prettier": "^3.3.3",
+    "riot": "^9.4.3",
+    "rollup": "^4.24.3",
+    "serve": "^14.2.4",
+    "sinon": "^19.0.2",
+    "sinon-chai": "^4.0.0",
+    "start-server-and-test": "^2.0.8"
   },
   "peerDependencies": {
     "riot": "^6.0.0 || ^7.0.0 || ^9.0.0"
   },
   "dependencies": {
-    "@riotjs/util": "^2.2.4"
+    "@riotjs/util": "^2.4.0"
   }
 }

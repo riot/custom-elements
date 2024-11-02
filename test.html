@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>E2E Tests</title>
+    <link rel="stylesheet" href="./node_modules/mocha/mocha.css" />
+    <script type="importmap">
+      {
+        "imports": {
+          "riot": "./node_modules/riot/esm/riot.js",
+          "chai": "./node_modules/chai/chai.js",
+          "sinon": "./node_modules/sinon/pkg/sinon-esm.js",
+          "sinon-chai": "./node_modules/sinon-chai/lib/sinon-chai.js"
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <div id="mocha"></div>
+    <script src="./node_modules/mocha/mocha.js"></script>
+    <script>
+      mocha.setup('bdd')
+    </script>
+    <script type="module">
+      import './test.js'
+      import { use } from 'chai'
+      import sinonChai from 'sinon-chai'
+
+      use(sinonChai)
+
+      const runner = mocha.run((failures) => {
+        // store the failure amount into this global variable that can be accessed from our e2e environment
+        // if the runner total value is less or equal to 0, we will force the test to fail
+        window.testFailures = runner.total === 0 ? [1] : failures
+      })
+    </script>
+    <script></script>
+  </body>
+</html>

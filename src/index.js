@@ -1,5 +1,5 @@
-import {component} from 'riot'
-import {defineProperty} from '@riotjs/util/objects'
+import { component } from 'riot'
+import { defineProperty } from '@riotjs/util/objects'
 
 /**
  * Create the style node to inject into the shadow DOM
@@ -32,11 +32,7 @@ function moveChildren(source, target) {
  * @returns {Class} Class extends HTMLElement
  */
 export function createElementClass(api) {
-  const {
-    css,
-    exports,
-    template
-  } = api
+  const { css, exports, template } = api
 
   const tagImplementation = exports || {}
 
@@ -48,7 +44,7 @@ export function createElementClass(api) {
       this.shadow = this.attachShadow({ mode: 'open' })
       this.componentFactory = component({
         exports: tagImplementation,
-        template
+        template,
       })
 
       // append the css if necessary
@@ -69,7 +65,7 @@ export function createElementClass(api) {
 
       defineProperty(this.component, 'props', {
         ...this.component.props,
-        [attributeName]: newValue
+        [attributeName]: newValue,
       })
       this.component.update()
     }

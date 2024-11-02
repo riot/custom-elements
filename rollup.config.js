@@ -7,9 +7,7 @@ const globals = {
 export default {
   input: 'src/index.js',
   external: ['riot'],
-  plugins: [
-    nodeResolve()
-  ],
+  plugins: [nodeResolve()],
   output: [
     {
       file: 'index.cjs',
@@ -23,5 +21,5 @@ export default {
       format: 'es',
       globals,
     },
-  ]
+  ],
 }
