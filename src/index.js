@@ -33,7 +33,7 @@ function moveChildren(source, target) {
  */
 export function createElementClass(api) {
   const { css, exports, template } = api
-
+  const originalOnMounted = exports?.onMounted ?? (() => {})
   const tagImplementation = exports || {}
 
   return class extends HTMLElement {
@@ -43,7 +43,7 @@ export function createElementClass(api) {
       // create the shadow DOM
       this.shadow = this.attachShadow({ mode: 'open' })
       this.componentFactory = component({
-        exports: tagImplementation,
+        exports: { ...tagImplementation, onMounted: undefined },
         template,
       })
 
@@ -57,6 +57,12 @@ export function createElementClass(api) {
 
       // move the tag root html into the shadow DOM
       moveChildren(this.component.root, this.shadow)
+
+      // call the onmounted only when the DOM has been moved
+      originalOnMounted.apply(this.component, [
+        this.component.props,
+        this.component.state,
+      ])
     }
 
     // on attribute changed

@@ -153,4 +153,21 @@ describe('@riotjs/custom-elements', function () {
       '10px',
     )
   })
+
+  it('the shadow root is accessible on the onmounted event (issue https://github.com/riot/custom-elements/issues/20)', () => {
+    const name = tmpTagName()
+    define(name, {
+      template: (t) => t('<p><!----></p>', []),
+      exports: {
+        onMounted() {
+          console.log(this)
+          this.root.shadowRoot.querySelector('p').textContent = 'foo'
+        },
+      },
+    })
+
+    const el = document.createElement(name)
+    document.body.appendChild(el)
+    expect(el.shadowRoot.querySelector('p').textContent).to.be.equal('foo')
+  })
 })
