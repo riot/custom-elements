@@ -28,8 +28,8 @@ function moveChildren(source, target) {
 
 /**
  * Create a new custom element Class using the riot core components
- * @param   {Object} api - custom component api containing lifecycle methods and properties
- * @returns {Class} Class extends HTMLElement
+ * @param   {object} api - custom component api containing lifecycle methods and properties
+ * @returns {object} Class extends HTMLElement
  */
 export function createElementClass(api) {
   const { css, exports, template } = api
@@ -91,8 +91,8 @@ export function createElementClass(api) {
 /**
  * Define a new custom element using the riot core components
  * @param   {string} name - custom component tag name
- * @param   {Object} api - custom component api containing lifecycle methods and properties
- * @param   {Object} options - optional options that could be passed to customElements.define
+ * @param   {object} api - custom component api containing lifecycle methods and properties
+ * @param   {object} options - optional options that could be passed to customElements.define
  * @returns {undefined} it's a void method again ¯\_(ツ)_/¯
  */
 export default function define(name, api, options) {

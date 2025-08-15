@@ -21,7 +21,7 @@ describe('@riotjs/custom-elements', function () {
               {
                 type: e.TEXT,
                 childNodeIndex: 0,
-                evaluate: (s) => s.props.message, // eslint-disable-line
+                evaluate: (s) => s.props.message,  
               },
             ],
           },

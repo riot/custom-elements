@@ -1,6 +1,0 @@
-extends: eslint-config-riot
-
-globals:
-  chai: true
-  sinon: true
-  sinonChai: true
