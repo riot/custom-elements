@@ -1,6 +1,6 @@
 {
   "name": "@riotjs/custom-elements",
-  "version": "10.0.0-rc.1",
+  "version": "10.0.0",
   "description": "Simple API to create vanilla custom elements with riot",
   "main": "index.js",
   "module": "index.js",
